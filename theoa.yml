@@ -1,0 +1,55 @@
+---
+- hosts: openarena-servers
+  gather_facts: True
+
+  tasks:
+  - name: Update apt cache on Debian/Ubuntu and install Openarena-server.
+    apt: name=openarena-server update_cache=yes cache_valid_time=3600
+
+  - name: Install some pre-reqs and handy tools
+    package:
+      name: '{{ item }}'
+      state: present
+    with_items:
+      - unzip
+
+  - name: Download file from a file path
+    get_url:
+      url: http://oa.goquake.com/servers/e+_2.2b_oa_mod.zip
+      dest: /tmp/explus_2.2b_oa_mod.zip
+
+  - unarchive:
+      src: /tmp/explus_2.2b_oa_mod.zip
+      dest: /usr/lib/openarena-server/baseoa
+      remote_src: True
+      creates: /usr/lib/openarena-server/baseoa/excessiveplus
+
+  - name: replace startup args to use excessiveplus
+    copy:
+      src: files/openarena-server
+      dest: /etc/default/openarena-server
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: replace server config
+    copy:
+      src: files/server.cfg
+      dest: /etc/openarena-server/server.cfg
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: replace rotation.txt
+    copy:
+      src: files/rotation.txt
+      dest: /usr/lib/openarena-server/baseoa/excessiveplus/rotation.txt
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Set to start on boot, and start openarena-server
+    service:
+      name: openarena-server
+      enabled: yes
+      state: restarted

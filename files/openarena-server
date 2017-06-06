@@ -1,0 +1,17 @@
+# Defaults for OpenArena init script
+# sourced by /etc/init.d/openarena-server
+# used as an EnvironmentFile by /lib/systemd/system/openarena-server.service
+# installed at /etc/default/openarena-server by the maintainer scripts
+
+# Options that are passed to the daemon.
+#
+# In addition to these options, the server will execute commands from
+# /etc/openarena-server/server.cfg using
+# "+exec etc/openarena-server/server.cfg".
+# For most options it's better to edit server.cfg instead, but certain
+# options such as fs_game and net_port can only be set here.
+DAEMON_OPTS="fs_game excessiveplus"
+
+# To disable the server, please use the normal mechanisms provided by init:
+# "update-rc.d openarena-server disable". The START_DAEMON variable is no
+# longer supported.
