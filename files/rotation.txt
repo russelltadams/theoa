@@ -3,16 +3,15 @@ $timelimit =  5;
 $fraglimit =  5;
 $g_gametype = 0;
 
-oa_rpg3dm2
-
 if ( $xp_activeClients >= 10 ) {
-    // big maps, 12 clients or more
+    // big maps, 10 clients or more
     oa_shouse
+    oa_rpg3dm2
+    oa_shine
 } else if ( $xp_activeClients >= 5 ) {
-    // normal maps, from 6 to 10 clients
+    // normal maps, from 5 to 9 clients
     oa_spirit3
 } else {
     // small maps, 4 clients or less
     oa_koth1
 }
-oa_shine
