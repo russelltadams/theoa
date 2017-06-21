@@ -12,6 +12,7 @@
       state: present
     with_items:
       - unzip
+      - htop
 
   - name: Download and unarchive excessiveplus mod
     get_url:
@@ -57,13 +58,3 @@
       +set com_legacyprotocol 71 \
       +set com_prot \
       + exec /etc/openarena/server.cfg
-
-
-
-
-### Bah it makes no sense
-#  - name: Set to start on boot, and start openarena-server
-#    service:
-#      name: openarena-server
-#      enabled: yes
-#      state: restarted
