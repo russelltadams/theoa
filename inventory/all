@@ -1,5 +1,6 @@
+
 [openarena-servers]
-theoa ansible_host=45.76.4.184
+theoa ansible_host=45.63.106.224
 
 [openarena-servers:vars]
 ansible_python_interpreter=/usr/bin/python3

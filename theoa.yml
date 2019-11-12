@@ -12,17 +12,18 @@
       state: present
     with_items:
       - unzip
+      - htop
 
-  - name: Download file from a file path
+  - name: Download and unarchive excessiveplus mod
     get_url:
       url: http://oa.goquake.com/servers/e+_2.2b_oa_mod.zip
       dest: /tmp/explus_2.2b_oa_mod.zip
 
   - unarchive:
       src: /tmp/explus_2.2b_oa_mod.zip
-      dest: /usr/lib/openarena-server/baseoa
+      dest: /usr/lib/openarena-server/
       remote_src: True
-      creates: /usr/lib/openarena-server/baseoa/excessiveplus
+      creates: /usr/lib/openarena-server/excessiveplus
 
   - name: replace startup args to use excessiveplus
     copy:
@@ -43,13 +44,17 @@
   - name: replace rotation.txt
     copy:
       src: files/rotation.txt
-      dest: /usr/lib/openarena-server/baseoa/excessiveplus/rotation.txt
+      dest: /usr/lib/openarena-server/excessiveplus/rotation.txt
       owner: root
       group: root
       mode: 0644
 
-  - name: Set to start on boot, and start openarena-server
-    service:
-      name: openarena-server
-      enabled: yes
-      state: restarted
+  - name: Start up OA with excessiveplus in a 'screen' session
+    shell: |
+      screen -m -d -S theoa \
+      /usr/lib/ioquake3/ioq3ded  +set fs_game excessiveplus \
+      +set com_basegame baseoa \
+      +set fs_basepath /usr/lib/openarena-server \
+      +set com_legacyprotocol 71 \
+      +set com_prot \
+      + exec /etc/openarena/server.cfg
